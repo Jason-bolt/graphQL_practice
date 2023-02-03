@@ -7,6 +7,7 @@ I recently learned the power of GraphQL and I find it very interesting. I just c
 ## Tech Stack
 
 - NodeJS
+- TypeScript
 - GraphQL
 - MongoDB
 - Apollo-server
@@ -36,6 +37,17 @@ The functionalities of the API include:
 - And many more to come as inspired 😅
 
 The power of GraphQL allows the querying of specific data from either a database or an existing API. So if there was a front end section to this API, it would have the power to hand pick the data needed for a particular view. Amazing right!
+
+<br />
+
+## How to run
+
+To run the project, you first need to clone the repository then run the commands below.
+
+```
+- npm install
+- npm run dev
+```
 
 <br />
 
