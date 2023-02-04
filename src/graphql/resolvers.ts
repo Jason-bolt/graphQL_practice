@@ -35,6 +35,9 @@ const resolvers: IResolvers = {
     books: async (): Promise<IBook[]> => {
       return await Book.find();
     },
+    book: async (_: void, { id }): Promise<IBook> => {
+      return await Book.findOne({ _id: id });
+    },
   },
 
   Book: {
@@ -73,6 +76,7 @@ const resolvers: IResolvers = {
     deleteAuthor: async (_: void, { id }): Promise<Boolean> => {
       const isDeleted = await Author.deleteOne({ _id: id });
       if (isDeleted) {
+        await Book.deleteMany({ author: id });
         return true;
       }
       return false;
@@ -88,6 +92,31 @@ const resolvers: IResolvers = {
       });
 
       return newBook;
+    },
+
+    editBook: async (_: void, { id, input }): Promise<IBook> => {
+      const { title, pages, author } = input;
+      const isEdited = await Book.updateOne(
+        { _id: id },
+        {
+          title: title,
+          pages: pages,
+          author: author,
+        }
+      );
+
+      if (isEdited) {
+        return Book.findOne({ _id: id });
+      }
+    },
+
+    deleteBook: async (_: void, { id }): Promise<Boolean> => {
+      const isDeleted = await Book.deleteOne({ _id: id });
+      if (isDeleted) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };
