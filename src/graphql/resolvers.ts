@@ -1,19 +1,20 @@
 import Author from "../models/Authors";
 import Book from "../models/Books";
-import { ObjectId } from "mongodb";
+// import { ObjectId } from "mongodb";
+import { Types } from "mongoose";
 
 interface IAuthor {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   first_name: string;
   last_name: string;
   createdAt: Date;
 }
 
 interface IBook {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   title: string;
   pages: number;
-  author: IAuthor;
+  author: object;
 }
 
 interface IResolvers {
@@ -34,6 +35,9 @@ const resolvers: IResolvers = {
     // Books Query
     books: async (): Promise<IBook[]> => {
       return await Book.find();
+    },
+    book: async (_: void, { id }): Promise<IBook> => {
+      return await Book.findOne({ _id: id });
     },
   },
 
@@ -73,13 +77,14 @@ const resolvers: IResolvers = {
     deleteAuthor: async (_: void, { id }): Promise<Boolean> => {
       const isDeleted = await Author.deleteOne({ _id: id });
       if (isDeleted) {
+        await Book.deleteMany({ author: id });
         return true;
       }
       return false;
     },
 
     // Books Mutations
-    createBook: async (_: void, { input }): Promise<any> => {
+    createBook: async (_: void, { input }): Promise<IBook> => {
       const { title, pages, author } = input;
       const newBook = await Book.create({
         title: title,
@@ -88,6 +93,31 @@ const resolvers: IResolvers = {
       });
 
       return newBook;
+    },
+
+    editBook: async (_: void, { id, input }): Promise<IBook> => {
+      const { title, pages, author } = input;
+      const isEdited = await Book.updateOne(
+        { _id: id },
+        {
+          title: title,
+          pages: pages,
+          author: author,
+        }
+      );
+
+      if (isEdited) {
+        return Book.findOne({ _id: id });
+      }
+    },
+
+    deleteBook: async (_: void, { id }): Promise<Boolean> => {
+      const isDeleted = await Book.deleteOne({ _id: id });
+      if (isDeleted) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };

@@ -28,15 +28,18 @@ input BookInput {
 
 type Mutation {
     createAuthor(input: AuthorInput!): Author!
-    createBook(input: BookInput!): Book!
     editAuthor(id: ID!, input: AuthorInput!): Author!
     deleteAuthor(id: ID!): Boolean
+    createBook(input: BookInput!): Book!
+    editBook(id: ID!, input: BookInput!): Book!
+    deleteBook(id: ID!): Boolean
 } 
 
 type Query {
     authors: [Author!]!
     author(id: ID!): Author!
     books: [Book!]!
+    book(id: ID!): Book!
 }
 
 `;

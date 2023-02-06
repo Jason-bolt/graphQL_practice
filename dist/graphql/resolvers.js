@@ -1,4 +1,3 @@
-import { ObjectId } from "mongodb";
 import Author from "../models/Authors.js";
 import Book from "../models/Books.js";
 const resolvers = {
@@ -8,19 +7,20 @@ const resolvers = {
       return await Author.find();
     },
     author: async (_, { id }) => {
-      console.log(id);
       return await Author.findOne({ _id: id });
     },
     // Books Query
     books: async () => {
       return await Book.find();
     },
+    book: async (_, { id }) => {
+      return await Book.findOne({ _id: id });
+    },
   },
   Book: {
     author: async ({ author }) => {
       const author_id = author.toHexString();
       const bookAuthor = await Author.findOne({ _id: author_id });
-      console.log(author_id);
       return bookAuthor;
     },
   },
@@ -50,6 +50,7 @@ const resolvers = {
     deleteAuthor: async (_, { id }) => {
       const isDeleted = await Author.deleteOne({ _id: id });
       if (isDeleted) {
+        await Book.deleteMany({ author: id });
         return true;
       }
       return false;
@@ -63,6 +64,28 @@ const resolvers = {
         author: author,
       });
       return newBook;
+    },
+    editBook: async (_, { id, input }) => {
+      const { title, pages, author } = input;
+      const isEdited = await Book.updateOne(
+        { _id: id },
+        {
+          title: title,
+          pages: pages,
+          author: author,
+        }
+      );
+      if (isEdited) {
+        return Book.findOne({ _id: id });
+      }
+    },
+    deleteBook: async (_, { id }) => {
+      const isDeleted = await Book.deleteOne({ _id: id });
+      if (isDeleted) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };
