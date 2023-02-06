@@ -51,4 +51,6 @@ To run the project, you first need to clone the repository then run the commands
 
 <br />
 
-The project is still being done so not all functionalities work at the moment. Do hit me up if you have suggestions on how I could improve my code quailty or want to talk about development in general 😉.
+Currently writing tests for the project.
+
+Do hit me up if you have suggestions on how I could improve my code quailty or want to talk about development in general 😉.
