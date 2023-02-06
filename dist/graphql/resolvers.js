@@ -43,13 +43,13 @@ const resolvers = {
           last_name: last_name,
         }
       );
-      if (isEdited.acknowledged) {
+      if (isEdited) {
         return await Author.findOne({ _id: id });
       }
     },
     deleteAuthor: async (_, { id }) => {
       const isDeleted = await Author.deleteOne({ _id: id });
-      if (isDeleted.acknowledged) {
+      if (isDeleted) {
         await Book.deleteMany({ author: id });
         return true;
       }
@@ -75,13 +75,13 @@ const resolvers = {
           author: author,
         }
       );
-      if (isEdited.acknowledged) {
+      if (isEdited) {
         return Book.findOne({ _id: id });
       }
     },
     deleteBook: async (_, { id }) => {
       const isDeleted = await Book.deleteOne({ _id: id });
-      if (isDeleted.acknowledged) {
+      if (isDeleted) {
         return true;
       } else {
         return false;

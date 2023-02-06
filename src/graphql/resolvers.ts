@@ -1,19 +1,20 @@
 import Author from "../models/Authors";
 import Book from "../models/Books";
-import { ObjectId } from "mongodb";
+// import { ObjectId } from "mongodb";
+import { Types } from "mongoose";
 
 interface IAuthor {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   first_name: string;
   last_name: string;
   createdAt: Date;
 }
 
 interface IBook {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   title: string;
   pages: number;
-  author: IAuthor;
+  author: object;
 }
 
 interface IResolvers {
@@ -83,7 +84,7 @@ const resolvers: IResolvers = {
     },
 
     // Books Mutations
-    createBook: async (_: void, { input }): Promise<any> => {
+    createBook: async (_: void, { input }): Promise<IBook> => {
       const { title, pages, author } = input;
       const newBook = await Book.create({
         title: title,
