@@ -17,13 +17,13 @@ interface IBook {
   author: object;
 }
 
-interface IResolvers {
-  Query: object;
-  Mutation: object;
-  Book: object;
-}
+// interface IResolvers {
+//   Query: object;
+//   Mutation: object;
+//   Book: object;
+// }
 
-const resolvers: IResolvers = {
+export const resolvers = {
   Query: {
     // Authors Query
     authors: async (): Promise<IAuthor[]> => {
@@ -121,5 +121,3 @@ const resolvers: IResolvers = {
     },
   },
 };
-
-export default resolvers;

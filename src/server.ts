@@ -3,7 +3,7 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import { connect } from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
-import resolvers from "./graphql/resolvers";
+import { resolvers } from "./graphql/resolvers";
 import typeDefs from "./graphql/typeDefs";
 
 class Server {

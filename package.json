@@ -8,7 +8,8 @@
     "compile": "tsc",
     "compile-dev": "tsc -w",
     "dev": "nodemon ./dist/server.js",
-    "start": "npm run compile && node ./dist/server.js"
+    "start": "npm run compile && node ./dist/server.js",
+    "test": "mocha './dist/*.test.js' --timeout 12000 --exit"
   },
   "keywords": [],
   "author": "",
@@ -17,13 +18,17 @@
     "@apollo/server": "^4.3.2",
     "@types/mongodb": "^4.0.7",
     "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
     "dotenv": "^16.0.3",
+    "esm": "^3.2.25",
     "graphql": "^16.6.0",
-    "mocha": "^10.2.0",
     "mongoose": "^6.9.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.18",
+    "mocha": "^10.2.0",
     "nodemon": "^2.0.20",
     "typescript": "^4.9.5"
   }
