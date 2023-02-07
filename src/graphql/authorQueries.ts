@@ -4,6 +4,19 @@ export const createAuthor = `mutation createAuthor($input: AuthorInput!) {
     }
   }`;
 
+export const editAuthor = `mutation EditAuthor($editAuthorId: ID!, $input: AuthorInput!) {
+  editAuthor(id: $editAuthorId, input: $input) {
+    _id
+    first_name
+    last_name
+    createdAt
+  }
+}`;
+
+export const deleteAuthor = `mutation DeleteAuthor($deleteAuthorId: ID!) {
+  deleteAuthor(id: $deleteAuthorId)
+}`;
+
 export const authors = `query authors {
     authors {
       _id
