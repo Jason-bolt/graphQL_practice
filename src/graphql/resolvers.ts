@@ -26,17 +26,17 @@ interface IBook {
 export const resolvers = {
   Query: {
     // Authors Query
-    authors: async (): Promise<IAuthor[]> => {
+    authors: async (_): Promise<IAuthor[]> => {
       return await Author.find();
     },
-    author: async (_: void, { id }): Promise<IAuthor> => {
+    author: async (_, { id }): Promise<IAuthor> => {
       return await Author.findOne({ _id: id });
     },
     // Books Query
     books: async (): Promise<IBook[]> => {
       return await Book.find();
     },
-    book: async (_: void, { id }): Promise<IBook> => {
+    book: async (_, { id }): Promise<IBook> => {
       return await Book.findOne({ _id: id });
     },
   },
@@ -51,7 +51,7 @@ export const resolvers = {
 
   Mutation: {
     // Authors Mutations
-    createAuthor: async (_: void, { input }): Promise<IAuthor> => {
+    createAuthor: async (_, { input }): Promise<IAuthor> => {
       const { first_name, last_name } = input;
       const newAuthor = await Author.create({
         first_name: first_name,
@@ -60,7 +60,7 @@ export const resolvers = {
       return newAuthor;
     },
 
-    editAuthor: async (_: void, { id, input }): Promise<IAuthor> => {
+    editAuthor: async (_, { id, input }): Promise<IAuthor> => {
       const { first_name, last_name } = input;
       const isEdited = await Author.updateOne(
         { _id: id },
@@ -74,7 +74,7 @@ export const resolvers = {
         return await Author.findOne({ _id: id });
       }
     },
-    deleteAuthor: async (_: void, { id }): Promise<Boolean> => {
+    deleteAuthor: async (_, { id }): Promise<Boolean> => {
       const isDeleted = await Author.deleteOne({ _id: id });
       if (isDeleted) {
         await Book.deleteMany({ author: id });
@@ -84,7 +84,7 @@ export const resolvers = {
     },
 
     // Books Mutations
-    createBook: async (_: void, { input }): Promise<IBook> => {
+    createBook: async (_, { input }): Promise<IBook> => {
       const { title, pages, author } = input;
       const newBook = await Book.create({
         title: title,
@@ -95,7 +95,7 @@ export const resolvers = {
       return newBook;
     },
 
-    editBook: async (_: void, { id, input }): Promise<IBook> => {
+    editBook: async (_, { id, input }): Promise<IBook> => {
       const { title, pages, author } = input;
       const isEdited = await Book.updateOne(
         { _id: id },

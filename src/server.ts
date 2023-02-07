@@ -6,7 +6,7 @@ dotenv.config();
 import { resolvers } from "./graphql/resolvers";
 import typeDefs from "./graphql/typeDefs";
 
-class Server {
+export class Server {
   static async connectDB(mongoURI: string) {
     return await connect(mongoURI);
   }

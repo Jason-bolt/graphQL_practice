@@ -3,6 +3,7 @@ export const createAuthor = `mutation createAuthor($input: AuthorInput!) {
       first_name
     }
   }`;
+
 export const authors = `query authors {
     authors {
       _id
