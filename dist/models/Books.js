@@ -1,5 +1,7 @@
-import { Schema, model } from "mongoose";
-const BookSchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = require("mongoose");
+const BookSchema = new mongoose_1.Schema({
     title: {
         type: String,
         required: true,
@@ -9,7 +11,7 @@ const BookSchema = new Schema({
         required: true,
     },
     author: {
-        type: Schema.Types.ObjectId,
+        type: mongoose_1.Schema.Types.ObjectId,
         required: true,
     },
     createdAt: {
@@ -17,5 +19,5 @@ const BookSchema = new Schema({
         default: Date.now(),
     },
 });
-const Book = model("Book", BookSchema);
-export default Book;
+const Book = (0, mongoose_1.model)("Book", BookSchema);
+exports.default = Book;

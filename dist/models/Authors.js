@@ -1,5 +1,7 @@
-import { Schema, model } from "mongoose";
-const AuthorSchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = require("mongoose");
+const AuthorSchema = new mongoose_1.Schema({
     first_name: {
         type: String,
         required: true,
@@ -13,5 +15,5 @@ const AuthorSchema = new Schema({
         default: Date.now(),
     },
 });
-const Author = model("Author", AuthorSchema);
-export default Author;
+const Author = (0, mongoose_1.model)("Author", AuthorSchema);
+exports.default = Author;

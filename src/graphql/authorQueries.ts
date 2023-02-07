@@ -12,3 +12,12 @@ export const authors = `query authors {
       createdAt
     }
   }`;
+
+export const author = `query Author($authorId: ID!) {
+  author(id: $authorId) {
+    _id
+    first_name
+    last_name
+    createdAt
+  }
+}`;

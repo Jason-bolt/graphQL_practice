@@ -7,6 +7,17 @@ type Author {
     createdAt: String!
 }
 
+type AuthorResponse {
+    status: String!,
+    message: String!,
+    data: Author
+}
+
+type BookResponse {
+    status: Int!,
+    message: String!,
+    data: Book
+}
 
 input AuthorInput {
     first_name: String!
@@ -27,11 +38,11 @@ input BookInput {
 }
 
 type Mutation {
-    createAuthor(input: AuthorInput!): Author!
-    editAuthor(id: ID!, input: AuthorInput!): Author!
+    createAuthor(input: AuthorInput!): AuthorResponse!
+    editAuthor(id: ID!, input: AuthorInput!): AuthorResponse!
     deleteAuthor(id: ID!): Boolean
-    createBook(input: BookInput!): Book!
-    editBook(id: ID!, input: BookInput!): Book!
+    createBook(input: BookInput!): BookResponse!
+    editBook(id: ID!, input: BookInput!): BookResponse!
     deleteBook(id: ID!): Boolean
 } 
 

@@ -17,20 +17,67 @@ interface IBook {
   author: object;
 }
 
-// interface IResolvers {
-//   Query: object;
-//   Mutation: object;
-//   Book: object;
-// }
+interface IBookResponse {
+  status: number;
+  message: string;
+  data: IBook[] | IBook | null;
+}
+
+interface IAuthorResponse {
+  status: number;
+  message: string;
+  data: IAuthor[] | IAuthor | null;
+}
 
 export const resolvers = {
   Query: {
     // Authors Query
-    authors: async (_): Promise<IAuthor[]> => {
-      return await Author.find();
+    authors: async (_): Promise<IAuthorResponse> => {
+      try {
+        const allAuthors = await Author.find();
+        return {
+          status: 200,
+          message: "Retrieving all authors",
+          data: allAuthors,
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: "Encountered an error!",
+          data: null,
+        };
+      }
     },
-    author: async (_, { id }): Promise<IAuthor> => {
-      return await Author.findOne({ _id: id });
+    author: async (_, { id }): Promise<IAuthorResponse> => {
+      try {
+        if (!id) {
+          return {
+            status: 404,
+            message: "ID is missing!",
+            data: null,
+          };
+        }
+        const author = await Author.findOne({ _id: id });
+
+        if (!author) {
+          return {
+            status: 404,
+            message: "Could not find author!",
+            data: null,
+          };
+        }
+        return {
+          status: 200,
+          message: "Retrieving a particular author",
+          data: author,
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: "Encountered an error!",
+          data: null,
+        };
+      }
     },
     // Books Query
     books: async (): Promise<IBook[]> => {

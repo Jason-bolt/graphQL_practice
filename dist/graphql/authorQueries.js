@@ -1,9 +1,12 @@
-export const createAuthor = `mutation createAuthor($input: AuthorInput!) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.author = exports.authors = exports.createAuthor = void 0;
+exports.createAuthor = `mutation createAuthor($input: AuthorInput!) {
     createAuthor(input: $input){
       first_name
     }
   }`;
-export const authors = `query authors {
+exports.authors = `query authors {
     authors {
       _id
       first_name
@@ -11,3 +14,11 @@ export const authors = `query authors {
       createdAt
     }
   }`;
+exports.author = `query Author($authorId: ID!) {
+  author(id: $authorId) {
+    _id
+    first_name
+    last_name
+    createdAt
+  }
+}`;
