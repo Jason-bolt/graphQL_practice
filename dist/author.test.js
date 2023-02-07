@@ -10,7 +10,6 @@ const server_1 = require("./server");
 const resolvers_1 = require("./graphql/resolvers");
 const dotenv_1 = __importDefault(require("dotenv"));
 const authorQueries_1 = require("./graphql/authorQueries");
-// import typeDefs from "./graphql/typeDefs";
 dotenv_1.default.config();
 server_1.Server.connectDB(process.env.mongoURI);
 // Server.connectApollo(typeDefs, resolvers)
@@ -33,20 +32,9 @@ chai_1.default.use(chai_http_1.default);
         //   expect(res.first_name).to.equal("Jason");
         //   expect(res.last_name).to.equal("Appiatu");
         // });
-        // it("Can't create an Author (missing first_name)", async () => {
-        //   const res = await resolvers.Mutation.createAuthor(createAuthor, {
-        //     input: {
-        //       first_name: "Jason",
-        //       last_name: "null",
-        //     },
-        //   });
-        //   expect(res).to.be.an("array");
-        //   expect(res.first_name).to.equal("Jason");
-        //   expect(res.last_name).to.equal("Appiatu");
-        // });
         (0, mocha_1.it)("Get all authors", async () => {
             const res = await resolvers_1.resolvers.Query.authors(authorQueries_1.authors);
-            expect(res).to.be.an("object");
+            expect(res.data).to.be.an("array");
             expect(res.status).to.be.eq(200);
         });
         (0, mocha_1.it)("Get one author (With correct ID)", async () => {
@@ -55,7 +43,7 @@ chai_1.default.use(chai_http_1.default);
             const res = await resolvers_1.resolvers.Query.author(authorQueries_1.author, {
                 id: ID,
             });
-            expect(res).to.be.an("object");
+            expect(res.data).to.be.an("object");
             expect(res.status).to.be.eql(200);
         });
         (0, mocha_1.it)("Get one author (With wrong ID)", async () => {
@@ -64,7 +52,7 @@ chai_1.default.use(chai_http_1.default);
             const res = await resolvers_1.resolvers.Query.author(authorQueries_1.author, {
                 id: ID,
             });
-            expect(res).to.be.an("object");
+            expect(res.data).to.be.eql(null);
             expect(res.status).to.be.eql(404);
         });
         (0, mocha_1.it)("Get one author (Server error)", async () => {
@@ -73,7 +61,7 @@ chai_1.default.use(chai_http_1.default);
             const res = await resolvers_1.resolvers.Query.author(authorQueries_1.author, {
                 id: ID,
             });
-            expect(res).to.be.an("object");
+            expect(res.data).to.be.eql(null);
             expect(res.status).to.be.eql(500);
         });
     });

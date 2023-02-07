@@ -4,11 +4,9 @@ import { describe, it } from "mocha";
 import { Server } from "./server";
 import { resolvers } from "./graphql/resolvers";
 import dotenv from "dotenv";
-import { Types } from "mongoose";
 import Author from "./models/Authors";
 import Book from "./models/Books";
 import { authors, createAuthor, author } from "./graphql/authorQueries";
-// import typeDefs from "./graphql/typeDefs";
 dotenv.config();
 
 Server.connectDB(process.env.mongoURI);
@@ -35,21 +33,9 @@ describe("Testing the book store API created with Apollo Graphql", () => {
     //   expect(res.last_name).to.equal("Appiatu");
     // });
 
-    // it("Can't create an Author (missing first_name)", async () => {
-    //   const res = await resolvers.Mutation.createAuthor(createAuthor, {
-    //     input: {
-    //       first_name: "Jason",
-    //       last_name: "null",
-    //     },
-    //   });
-    //   expect(res).to.be.an("array");
-    //   expect(res.first_name).to.equal("Jason");
-    //   expect(res.last_name).to.equal("Appiatu");
-    // });
-
     it("Get all authors", async () => {
       const res = await resolvers.Query.authors(authors);
-      expect(res).to.be.an("object");
+      expect(res.data).to.be.an("array");
       expect(res.status).to.be.eq(200);
     });
 
@@ -59,7 +45,7 @@ describe("Testing the book store API created with Apollo Graphql", () => {
       const res = await resolvers.Query.author(author, {
         id: ID,
       });
-      expect(res).to.be.an("object");
+      expect(res.data).to.be.an("object");
       expect(res.status).to.be.eql(200);
     });
 
@@ -69,7 +55,7 @@ describe("Testing the book store API created with Apollo Graphql", () => {
       const res = await resolvers.Query.author(author, {
         id: ID,
       });
-      expect(res).to.be.an("object");
+      expect(res.data).to.be.eql(null);
       expect(res.status).to.be.eql(404);
     });
 
@@ -79,7 +65,7 @@ describe("Testing the book store API created with Apollo Graphql", () => {
       const res = await resolvers.Query.author(author, {
         id: ID,
       });
-      expect(res).to.be.an("object");
+      expect(res.data).to.be.eql(null);
       expect(res.status).to.be.eql(500);
     });
   });

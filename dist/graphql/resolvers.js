@@ -58,8 +58,22 @@ exports.resolvers = {
             }
         },
         // Books Query
-        books: async () => {
-            return await Books_1.default.find();
+        books: async (_) => {
+            try {
+                const allBooks = await Books_1.default.find();
+                return {
+                    status: 200,
+                    message: "Retrieving all books",
+                    data: allBooks,
+                };
+            }
+            catch (err) {
+                return {
+                    status: 500,
+                    message: "Encountered an error!",
+                    data: null,
+                };
+            }
         },
         book: async (_, { id }) => {
             return await Books_1.default.findOne({ _id: id });
@@ -103,12 +117,32 @@ exports.resolvers = {
         // Books Mutations
         createBook: async (_, { input }) => {
             const { title, pages, author } = input;
-            const newBook = await Books_1.default.create({
-                title: title,
-                pages: pages,
-                author: author,
-            });
-            return newBook;
+            if (!title || !pages || !author) {
+                return {
+                    status: 404,
+                    message: "All fields are required!",
+                    data: null,
+                };
+            }
+            try {
+                const newBook = await Books_1.default.create({
+                    title: title,
+                    pages: pages,
+                    author: author,
+                });
+                return {
+                    status: 200,
+                    message: "Successfully created a new book!",
+                    data: newBook,
+                };
+            }
+            catch (err) {
+                return {
+                    status: 500,
+                    message: "Encountered an error!",
+                    data: null,
+                };
+            }
         },
         editBook: async (_, { id, input }) => {
             const { title, pages, author } = input;
