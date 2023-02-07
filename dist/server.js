@@ -5,9 +5,11 @@ import dotenv from "dotenv";
 dotenv.config();
 import { resolvers } from "./graphql/resolvers.js";
 import typeDefs from "./graphql/typeDefs.js";
-class Server {
+export class Server {
   static async connectDB(mongoURI) {
-    return await connect(mongoURI);
+    return await connect(mongoURI, {
+      useNewUrlParser: true,
+    });
   }
   static async connectApollo(typeDefs, resolvers) {
     const server = new ApolloServer({ typeDefs, resolvers });
