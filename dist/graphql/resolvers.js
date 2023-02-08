@@ -117,30 +117,91 @@ exports.resolvers = {
     Mutation: {
         // Authors Mutations
         createAuthor: async (_, { input }) => {
-            const { first_name, last_name } = input;
-            const newAuthor = await Authors_1.default.create({
-                first_name: first_name,
-                last_name: last_name,
-            });
-            return newAuthor;
+            try {
+                if (!input.first_name || !input.last_name) {
+                    return {
+                        status: 404,
+                        message: "First name and last name are required!",
+                        data: null,
+                    };
+                }
+                const { first_name, last_name } = input;
+                const newAuthor = await Authors_1.default.create({
+                    first_name: first_name,
+                    last_name: last_name,
+                });
+                return {
+                    status: 200,
+                    message: "Created a new author!",
+                    data: newAuthor,
+                };
+            }
+            catch (err) {
+                return {
+                    status: 500,
+                    message: "Encountered an error!",
+                    data: null,
+                };
+            }
         },
         editAuthor: async (_, { id, input }) => {
-            const { first_name, last_name } = input;
-            const isEdited = await Authors_1.default.updateOne({ _id: id }, {
-                first_name: first_name,
-                last_name: last_name,
-            });
-            if (isEdited) {
-                return await Authors_1.default.findOne({ _id: id });
+            try {
+                if (!id || !input.first_name || !input.last_name) {
+                    return {
+                        status: 404,
+                        message: "All fields are required!",
+                        data: null,
+                    };
+                }
+                const { first_name, last_name } = input;
+                // Updating author
+                await Authors_1.default.updateOne({ _id: id }, {
+                    first_name: first_name,
+                    last_name: last_name,
+                });
+                const author = await Authors_1.default.findOne({ _id: id });
+                return {
+                    status: 200,
+                    message: "Author edited!",
+                    data: author,
+                };
+            }
+            catch (err) {
+                return {
+                    status: 500,
+                    message: "Encountered an error!",
+                    data: null,
+                };
             }
         },
         deleteAuthor: async (_, { id }) => {
-            const isDeleted = await Authors_1.default.deleteOne({ _id: id });
-            if (isDeleted) {
-                await Books_1.default.deleteMany({ author: id });
-                return true;
+            try {
+                if (!id) {
+                    return {
+                        status: 404,
+                        message: "ID is required!",
+                        data: null,
+                    };
+                }
+                // Deleting the author
+                const isDeleted = await Authors_1.default.deleteOne({ _id: id });
+                if (isDeleted) {
+                    // Deleting all books of that author
+                    await Books_1.default.deleteMany({ author: id });
+                    return {
+                        status: 200,
+                        message: "Author deleted!",
+                        data: null,
+                    };
+                }
             }
-            return false;
+            catch (err) {
+                return {
+                    status: 500,
+                    message: "Encountered an error!",
+                    data: null,
+                };
+            }
         },
         // Books Mutations
         createBook: async (_, { input }) => {
@@ -173,23 +234,57 @@ exports.resolvers = {
             }
         },
         editBook: async (_, { id, input }) => {
-            const { title, pages, author } = input;
-            const isEdited = await Books_1.default.updateOne({ _id: id }, {
-                title: title,
-                pages: pages,
-                author: author,
-            });
-            if (isEdited) {
-                return Books_1.default.findOne({ _id: id });
+            try {
+                if (!input.title || !input.pages || !input.author) {
+                    return {
+                        status: 404,
+                        message: "All fields are required!",
+                        data: null,
+                    };
+                }
+                const { title, pages, author } = input;
+                await Books_1.default.updateOne({ _id: id }, {
+                    title: title,
+                    pages: pages,
+                    author: author,
+                });
+                const book = await Books_1.default.findOne({ _id: id });
+                return {
+                    status: 200,
+                    message: "Book edited successfully!",
+                    data: book,
+                };
+            }
+            catch (err) {
+                return {
+                    status: 500,
+                    message: "Encountered an error!",
+                    data: null,
+                };
             }
         },
         deleteBook: async (_, { id }) => {
-            const isDeleted = await Books_1.default.deleteOne({ _id: id });
-            if (isDeleted) {
-                return true;
+            try {
+                if (!id) {
+                    return {
+                        status: 404,
+                        message: "ID is required!",
+                        data: null,
+                    };
+                }
+                await Books_1.default.deleteOne({ _id: id });
+                return {
+                    status: 200,
+                    message: "Book deleted!",
+                    data: null,
+                };
             }
-            else {
-                return false;
+            catch (err) {
+                return {
+                    status: 500,
+                    message: "Encountered an error!",
+                    data: null,
+                };
             }
         },
     },

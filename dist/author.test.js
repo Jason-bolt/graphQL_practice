@@ -48,16 +48,22 @@ chai_1.default.use(chai_http_1.default);
         });
         (0, mocha_1.it)("Get one author (With wrong ID)", async () => {
             const ID = "63e2566c25d2c8351630ea56";
-            console.log(typeof ID);
             const res = await resolvers_1.resolvers.Query.author(authorQueries_1.author, {
                 id: ID,
             });
             expect(res.data).to.be.eql(null);
             expect(res.status).to.be.eql(404);
         });
+        (0, mocha_1.it)("Get one author (ID does not exist)", async () => {
+            const res = await resolvers_1.resolvers.Query.author(authorQueries_1.author, {
+                id: null,
+            });
+            expect(res.data).to.be.eql(null);
+            expect(res.message).to.be.eql("ID is missing!");
+            expect(res.status).to.be.eql(404);
+        });
         (0, mocha_1.it)("Get one author (Server error)", async () => {
             const ID = "63e2566c25d2c8351630ea5";
-            console.log(typeof ID);
             const res = await resolvers_1.resolvers.Query.author(authorQueries_1.author, {
                 id: ID,
             });

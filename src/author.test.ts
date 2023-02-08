@@ -51,7 +51,6 @@ describe("Testing the book store API created with Apollo Graphql", () => {
 
     it("Get one author (With wrong ID)", async () => {
       const ID = "63e2566c25d2c8351630ea56";
-      console.log(typeof ID);
       const res = await resolvers.Query.author(author, {
         id: ID,
       });
@@ -59,9 +58,17 @@ describe("Testing the book store API created with Apollo Graphql", () => {
       expect(res.status).to.be.eql(404);
     });
 
+    it("Get one author (ID does not exist)", async () => {
+      const res = await resolvers.Query.author(author, {
+        id: null,
+      });
+      expect(res.data).to.be.eql(null);
+      expect(res.message).to.be.eql("ID is missing!");
+      expect(res.status).to.be.eql(404);
+    });
+
     it("Get one author (Server error)", async () => {
       const ID = "63e2566c25d2c8351630ea5";
-      console.log(typeof ID);
       const res = await resolvers.Query.author(author, {
         id: ID,
       });
