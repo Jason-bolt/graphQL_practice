@@ -96,8 +96,37 @@ export const resolvers = {
         };
       }
     },
-    book: async (_, { id }): Promise<IBook> => {
-      return await Book.findOne({ _id: id });
+    book: async (_, { id }): Promise<IBookResponse> => {
+      try {
+        if (!id) {
+          return {
+            status: 404,
+            message: "ID is missing!",
+            data: null,
+          };
+        }
+        const book = await Book.findOne({ _id: id });
+
+        if (!book) {
+          return {
+            status: 404,
+            message: "Book could not be found!",
+            data: null,
+          };
+        }
+
+        return {
+          status: 200,
+          message: "Successfully retrieved a book!",
+          data: book,
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: "Encountered an error!",
+          data: null,
+        };
+      }
     },
   },
 
@@ -111,36 +140,95 @@ export const resolvers = {
 
   Mutation: {
     // Authors Mutations
-    createAuthor: async (_, { input }): Promise<IAuthor> => {
-      const { first_name, last_name } = input;
-      const newAuthor = await Author.create({
-        first_name: first_name,
-        last_name: last_name,
-      });
-      return newAuthor;
-    },
-
-    editAuthor: async (_, { id, input }): Promise<IAuthor> => {
-      const { first_name, last_name } = input;
-      const isEdited = await Author.updateOne(
-        { _id: id },
-        {
+    createAuthor: async (_, { input }): Promise<IAuthorResponse> => {
+      try {
+        if (!input.first_name || !input.last_name) {
+          return {
+            status: 404,
+            message: "First name and last name are required!",
+            data: null,
+          };
+        }
+        const { first_name, last_name } = input;
+        const newAuthor = await Author.create({
           first_name: first_name,
           last_name: last_name,
-        }
-      );
+        });
 
-      if (isEdited) {
-        return await Author.findOne({ _id: id });
+        return {
+          status: 200,
+          message: "Created a new author!",
+          data: newAuthor,
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: "Encountered an error!",
+          data: null,
+        };
       }
     },
-    deleteAuthor: async (_, { id }): Promise<Boolean> => {
-      const isDeleted = await Author.deleteOne({ _id: id });
-      if (isDeleted) {
-        await Book.deleteMany({ author: id });
-        return true;
+
+    editAuthor: async (_, { id, input }): Promise<IAuthorResponse> => {
+      try {
+        if (!id || !input.first_name || !input.last_name) {
+          return {
+            status: 404,
+            message: "All fields are required!",
+            data: null,
+          };
+        }
+        const { first_name, last_name } = input;
+        // Updating author
+        await Author.updateOne(
+          { _id: id },
+          {
+            first_name: first_name,
+            last_name: last_name,
+          }
+        );
+
+        const author = await Author.findOne({ _id: id });
+        return {
+          status: 200,
+          message: "Author edited!",
+          data: author,
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: "Encountered an error!",
+          data: null,
+        };
       }
-      return false;
+    },
+    deleteAuthor: async (_, { id }): Promise<IAuthorResponse> => {
+      try {
+        if (!id) {
+          return {
+            status: 404,
+            message: "ID is required!",
+            data: null,
+          };
+        }
+        // Deleting the author
+        const isDeleted = await Author.deleteOne({ _id: id });
+        if (isDeleted) {
+          // Deleting all books of that author
+          await Book.deleteMany({ author: id });
+          return {
+            status: 200,
+            message: "Author deleted!",
+            data: null,
+          };
+        }
+      } catch (err) {
+        return {
+          status: 500,
+          message: "Encountered an error!",
+          data: null,
+        };
+      }
     },
 
     // Books Mutations
@@ -176,28 +264,63 @@ export const resolvers = {
       }
     },
 
-    editBook: async (_, { id, input }): Promise<IBook> => {
-      const { title, pages, author } = input;
-      const isEdited = await Book.updateOne(
-        { _id: id },
-        {
-          title: title,
-          pages: pages,
-          author: author,
+    editBook: async (_, { id, input }): Promise<IBookResponse> => {
+      try {
+        if (!input.title || !input.pages || !input.author) {
+          return {
+            status: 404,
+            message: "All fields are required!",
+            data: null,
+          };
         }
-      );
+        const { title, pages, author } = input;
+        await Book.updateOne(
+          { _id: id },
+          {
+            title: title,
+            pages: pages,
+            author: author,
+          }
+        );
 
-      if (isEdited) {
-        return Book.findOne({ _id: id });
+        const book = await Book.findOne({ _id: id });
+
+        return {
+          status: 200,
+          message: "Book edited successfully!",
+          data: book,
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: "Encountered an error!",
+          data: null,
+        };
       }
     },
 
-    deleteBook: async (_: void, { id }): Promise<Boolean> => {
-      const isDeleted = await Book.deleteOne({ _id: id });
-      if (isDeleted) {
-        return true;
-      } else {
-        return false;
+    deleteBook: async (_, { id }): Promise<IBookResponse> => {
+      try {
+        if (!id) {
+          return {
+            status: 404,
+            message: "ID is required!",
+            data: null,
+          };
+        }
+        await Book.deleteOne({ _id: id });
+
+        return {
+          status: 200,
+          message: "Book deleted!",
+          data: null,
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: "Encountered an error!",
+          data: null,
+        };
       }
     },
   },

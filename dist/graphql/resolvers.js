@@ -76,7 +76,35 @@ exports.resolvers = {
             }
         },
         book: async (_, { id }) => {
-            return await Books_1.default.findOne({ _id: id });
+            try {
+                if (!id) {
+                    return {
+                        status: 404,
+                        message: "ID is missing!",
+                        data: null,
+                    };
+                }
+                const book = await Books_1.default.findOne({ _id: id });
+                if (!book) {
+                    return {
+                        status: 404,
+                        message: "Book could not be found!",
+                        data: null,
+                    };
+                }
+                return {
+                    status: 200,
+                    message: "Successfully retrieved a book!",
+                    data: book,
+                };
+            }
+            catch (err) {
+                return {
+                    status: 500,
+                    message: "Encountered an error!",
+                    data: null,
+                };
+            }
         },
     },
     Book: {
