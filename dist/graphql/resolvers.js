@@ -131,7 +131,7 @@ exports.resolvers = {
                     last_name: last_name,
                 });
                 return {
-                    status: 200,
+                    status: 201,
                     message: "Created a new author!",
                     data: newAuthor,
                 };

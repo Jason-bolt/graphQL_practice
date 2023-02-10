@@ -156,7 +156,7 @@ export const resolvers = {
         });
 
         return {
-          status: 200,
+          status: 201,
           message: "Created a new author!",
           data: newAuthor,
         };
