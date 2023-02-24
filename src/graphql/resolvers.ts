@@ -266,7 +266,7 @@ export const resolvers = {
 
     editBook: async (_, { id, input }): Promise<IBookResponse> => {
       try {
-        if (!input.title || !input.pages ) {
+        if (!id || !input.title || !input.pages ) {
           return {
             status: 404,
             message: "All fields are required!",

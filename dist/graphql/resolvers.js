@@ -235,7 +235,7 @@ exports.resolvers = {
         },
         editBook: async (_, { id, input }) => {
             try {
-                if (!input.title || !input.pages) {
+                if (!id || !input.title || !input.pages) {
                     return {
                         status: 404,
                         message: "All fields are required!",
