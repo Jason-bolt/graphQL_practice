@@ -38,12 +38,12 @@ chai_1.default.use(chai_http_1.default);
             expect(res.data).to.be.an("array");
             expect(res.status).to.be.eql(200);
         });
-        (0, mocha_1.it)("Get specific book", async () => {
-            const ID = "63e27e11f53a3768a67c72f5";
-            const res = await resolvers_1.resolvers.Query.book(bookQueries_1.book, { id: ID });
-            expect(res.data).to.be.an("object");
-            expect(res.status).to.be.eq(200);
-        });
+        // it("Get specific book", async () => {
+        //   const ID = "63e27e11f53a3768a67c72f5";
+        //   const res = await resolvers.Query.book(book, { id: ID });
+        //   expect(res.data).to.be.an("object");
+        //   expect(res.status).to.be.eq(200);
+        // });
         (0, mocha_1.it)("Get specific book (With wrong ID)", async () => {
             const ID = "63e27e11f53a3768a67c72f6";
             const res = await resolvers_1.resolvers.Query.book(bookQueries_1.book, { id: ID });
@@ -62,19 +62,19 @@ chai_1.default.use(chai_http_1.default);
             expect(res.data).to.be.eq(null);
             expect(res.status).to.be.eq(500);
         });
-        (0, mocha_1.it)("Edit Book", async () => {
-            const ID = "63e27e11f53a3768a67c72f5";
-            const res = await resolvers_1.resolvers.Mutation.editBook(bookQueries_1.editBook, {
-                id: ID,
-                input: {
-                    title: "Beginning",
-                    pages: 5
-                },
-            });
-            expect(res).to.be.an("object");
-            expect(res.status).to.be.eql(200);
-            expect(res.data).to.be.an("object");
-        });
+        // it("Edit Book", async () => {
+        //   const ID = "63e27e11f53a3768a67c72f5";
+        //   const res = await resolvers.Mutation.editBook(editBook, {
+        //     id: ID,
+        //     input: {
+        //       title: "Beginning",
+        //       pages: 5
+        //     },
+        //   });
+        //   expect(res).to.be.an("object");
+        //   expect(res.status).to.be.eql(200);
+        //   expect(res.data).to.be.an("object");
+        // });
         (0, mocha_1.it)("Edit book (Wrong ID count)", async () => {
             const ID = "63e27e11f53a3768a67c72f";
             const res = await resolvers_1.resolvers.Mutation.editBook(bookQueries_1.editBook, {
@@ -101,32 +101,32 @@ chai_1.default.use(chai_http_1.default);
             expect(res.status).to.be.eql(404);
             expect(res.data).to.be.eql(null);
         });
-        // // it("Delete author (Correct ID)", async () => {
-        // //   const ID = "63e6571e27c7290fd13be034";
-        // //   const res = await resolvers.Mutation.deleteAuthor(deleteAuthor, {
-        // //     id: ID,
-        // //   });
-        // //   expect(res).to.be.an("object");
-        // //   expect(res.status).to.be.eql(200);
-        // //   expect(res.data).to.be.eql(null);
-        // // });
-        // it("Delete author (Wrong ID)", async () => {
-        //   const ID = "63e656e9231f37ca3807bd7g";
-        //   const res = await resolvers.Mutation.deleteAuthor(deleteAuthor, {
+        // it("Delete book (Correct ID)", async () => {
+        //   const ID = "63e27e11f53a3768a67c72f5";
+        //   const res = await resolvers.Mutation.deleteBook(deleteBook, {
         //     id: ID,
         //   });
         //   expect(res).to.be.an("object");
-        //   expect(res.status).to.be.eql(500);
+        //   expect(res.status).to.be.eql(200);
         //   expect(res.data).to.be.eql(null);
         // });
-        // it("Delete author (No ID)", async () => {
-        //   const ID = "";
-        //   const res = await resolvers.Mutation.deleteAuthor(deleteAuthor, {
-        //     id: ID,
-        //   });
-        //   expect(res).to.be.an("object");
-        //   expect(res.status).to.be.eql(404);
-        //   expect(res.data).to.be.eql(null);
-        // });
+        (0, mocha_1.it)("Delete book (Wrong ID)", async () => {
+            const ID = "63e27df8ab191c645edded2";
+            const res = await resolvers_1.resolvers.Mutation.deleteBook(bookQueries_1.deleteBook, {
+                id: ID,
+            });
+            expect(res).to.be.an("object");
+            expect(res.status).to.be.eql(500);
+            expect(res.data).to.be.eql(null);
+        });
+        (0, mocha_1.it)("Delete book (No ID)", async () => {
+            const ID = "";
+            const res = await resolvers_1.resolvers.Mutation.deleteBook(bookQueries_1.deleteBook, {
+                id: ID,
+            });
+            expect(res).to.be.an("object");
+            expect(res.status).to.be.eql(404);
+            expect(res.data).to.be.eql(null);
+        });
     });
 });

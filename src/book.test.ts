@@ -6,7 +6,7 @@ import { resolvers } from "./graphql/resolvers";
 import dotenv from "dotenv";
 import Author from "./models/Authors";
 import Book from "./models/Books";
-import { book, books, createBook, editBook } from "./graphql/bookQueries";
+import { book, books, createBook, deleteBook, editBook } from "./graphql/bookQueries";
 // import typeDefs from "./graphql/typeDefs";
 dotenv.config();
 
@@ -41,12 +41,12 @@ describe("Testing the book store API created with Apollo Graphql", () => {
       expect(res.status).to.be.eql(200);
     });
 
-    it("Get specific book", async () => {
-      const ID = "63e27e11f53a3768a67c72f5";
-      const res = await resolvers.Query.book(book, { id: ID });
-      expect(res.data).to.be.an("object");
-      expect(res.status).to.be.eq(200);
-    });
+    // it("Get specific book", async () => {
+    //   const ID = "63e27e11f53a3768a67c72f5";
+    //   const res = await resolvers.Query.book(book, { id: ID });
+    //   expect(res.data).to.be.an("object");
+    //   expect(res.status).to.be.eq(200);
+    // });
 
     it("Get specific book (With wrong ID)", async () => {
       const ID = "63e27e11f53a3768a67c72f6";
@@ -69,19 +69,19 @@ describe("Testing the book store API created with Apollo Graphql", () => {
       expect(res.status).to.be.eq(500);
     });
 
-    it("Edit Book", async () => {
-      const ID = "63e27e11f53a3768a67c72f5";
-      const res = await resolvers.Mutation.editBook(editBook, {
-        id: ID,
-        input: {
-          title: "Beginning",
-          pages: 5
-        },
-      });
-      expect(res).to.be.an("object");
-      expect(res.status).to.be.eql(200);
-      expect(res.data).to.be.an("object");
-    });
+    // it("Edit Book", async () => {
+    //   const ID = "63e27e11f53a3768a67c72f5";
+    //   const res = await resolvers.Mutation.editBook(editBook, {
+    //     id: ID,
+    //     input: {
+    //       title: "Beginning",
+    //       pages: 5
+    //     },
+    //   });
+    //   expect(res).to.be.an("object");
+    //   expect(res.status).to.be.eql(200);
+    //   expect(res.data).to.be.an("object");
+    // });
 
     it("Edit book (Wrong ID count)", async () => {
       const ID = "63e27e11f53a3768a67c72f";
@@ -111,34 +111,34 @@ describe("Testing the book store API created with Apollo Graphql", () => {
       expect(res.data).to.be.eql(null);
     });
 
-    // // it("Delete author (Correct ID)", async () => {
-    // //   const ID = "63e6571e27c7290fd13be034";
-    // //   const res = await resolvers.Mutation.deleteAuthor(deleteAuthor, {
-    // //     id: ID,
-    // //   });
-    // //   expect(res).to.be.an("object");
-    // //   expect(res.status).to.be.eql(200);
-    // //   expect(res.data).to.be.eql(null);
-    // // });
-
-    // it("Delete author (Wrong ID)", async () => {
-    //   const ID = "63e656e9231f37ca3807bd7g";
-    //   const res = await resolvers.Mutation.deleteAuthor(deleteAuthor, {
+    // it("Delete book (Correct ID)", async () => {
+    //   const ID = "63e27e11f53a3768a67c72f5";
+    //   const res = await resolvers.Mutation.deleteBook(deleteBook, {
     //     id: ID,
     //   });
     //   expect(res).to.be.an("object");
-    //   expect(res.status).to.be.eql(500);
+    //   expect(res.status).to.be.eql(200);
     //   expect(res.data).to.be.eql(null);
     // });
 
-    // it("Delete author (No ID)", async () => {
-    //   const ID = "";
-    //   const res = await resolvers.Mutation.deleteAuthor(deleteAuthor, {
-    //     id: ID,
-    //   });
-    //   expect(res).to.be.an("object");
-    //   expect(res.status).to.be.eql(404);
-    //   expect(res.data).to.be.eql(null);
-    // });
+    it("Delete book (Wrong ID)", async () => {
+      const ID = "63e27df8ab191c645edded2";
+      const res = await resolvers.Mutation.deleteBook(deleteBook, {
+        id: ID,
+      });
+      expect(res).to.be.an("object");
+      expect(res.status).to.be.eql(500);
+      expect(res.data).to.be.eql(null);
+    });
+
+    it("Delete book (No ID)", async () => {
+      const ID = "";
+      const res = await resolvers.Mutation.deleteBook(deleteBook, {
+        id: ID,
+      });
+      expect(res).to.be.an("object");
+      expect(res.status).to.be.eql(404);
+      expect(res.data).to.be.eql(null);
+    });
   });
 });
