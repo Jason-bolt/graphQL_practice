@@ -6,7 +6,7 @@ import { resolvers } from "./graphql/resolvers";
 import dotenv from "dotenv";
 import Author from "./models/Authors";
 import Book from "./models/Books";
-import { books, createBook } from "./graphql/bookQueries";
+import { book, books, createBook } from "./graphql/bookQueries";
 // import typeDefs from "./graphql/typeDefs";
 dotenv.config();
 
@@ -39,6 +39,13 @@ describe("Testing the book store API created with Apollo Graphql", () => {
       const res = await resolvers.Query.books(books);
       expect(res.data).to.be.an("array");
       expect(res.status).to.be.eql(200);
+    });
+
+    it("Get specific book", async () => {
+      const ID = "63e27e11f53a3768a67c72f5";
+      const res = await resolvers.Query.book(book, { id: ID });
+      expect(res.data).to.be.an("object");
+      expect(res.status).to.be.eq(200);
     });
   });
 });

@@ -38,5 +38,11 @@ chai_1.default.use(chai_http_1.default);
             expect(res.data).to.be.an("array");
             expect(res.status).to.be.eql(200);
         });
+        (0, mocha_1.it)("Get specific book", async () => {
+            const ID = "63e27e11f53a3768a67c72f5";
+            const res = await resolvers_1.resolvers.Query.book(bookQueries_1.book, { id: ID });
+            expect(res.data).to.be.an("object");
+            expect(res.status).to.be.eq(200);
+        });
     });
 });
