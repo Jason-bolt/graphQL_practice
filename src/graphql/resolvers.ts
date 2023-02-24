@@ -266,20 +266,19 @@ export const resolvers = {
 
     editBook: async (_, { id, input }): Promise<IBookResponse> => {
       try {
-        if (!input.title || !input.pages || !input.author) {
+        if (!input.title || !input.pages ) {
           return {
             status: 404,
             message: "All fields are required!",
             data: null,
           };
         }
-        const { title, pages, author } = input;
+        const { title, pages } = input;
         await Book.updateOne(
           { _id: id },
           {
             title: title,
             pages: pages,
-            author: author,
           }
         );
 

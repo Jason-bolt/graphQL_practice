@@ -44,5 +44,89 @@ chai_1.default.use(chai_http_1.default);
             expect(res.data).to.be.an("object");
             expect(res.status).to.be.eq(200);
         });
+        (0, mocha_1.it)("Get specific book (With wrong ID)", async () => {
+            const ID = "63e27e11f53a3768a67c72f6";
+            const res = await resolvers_1.resolvers.Query.book(bookQueries_1.book, { id: ID });
+            expect(res.data).to.be.eq(null);
+            expect(res.status).to.be.eq(404);
+        });
+        (0, mocha_1.it)("Get specific book (ID does not exist)", async () => {
+            const res = await resolvers_1.resolvers.Query.book(bookQueries_1.book, { id: null });
+            expect(res.data).to.be.eq(null);
+            expect(res.message).to.be.eq("ID is missing!");
+            expect(res.status).to.be.eq(404);
+        });
+        (0, mocha_1.it)("Get specific book (Wrong ID count - Server error)", async () => {
+            const ID = "63e27e11f53a3768a67c72f";
+            const res = await resolvers_1.resolvers.Query.book(bookQueries_1.book, { id: ID });
+            expect(res.data).to.be.eq(null);
+            expect(res.status).to.be.eq(500);
+        });
+        (0, mocha_1.it)("Edit Book", async () => {
+            const ID = "63e27e11f53a3768a67c72f5";
+            const res = await resolvers_1.resolvers.Mutation.editBook(bookQueries_1.editBook, {
+                id: ID,
+                input: {
+                    title: "Beginning",
+                    pages: 5
+                },
+            });
+            expect(res).to.be.an("object");
+            expect(res.status).to.be.eql(200);
+            expect(res.data).to.be.an("object");
+        });
+        // it("Edit author (Wrong ID count)", async () => {
+        //   const ID = "63e2566c25d2c8351630ea5";
+        //   const res = await resolvers.Mutation.editAuthor(editAuthor, {
+        //     id: ID,
+        //     input: {
+        //       first_name: "Jason",
+        //       last_name: "Appiatu",
+        //     },
+        //   });
+        //   expect(res).to.be.an("object");
+        //   expect(res.status).to.be.eql(500);
+        //   expect(res.data).to.be.eql(null);
+        // });
+        // it("Edit author (No ID)", async () => {
+        //   const ID = "";
+        //   const res = await resolvers.Mutation.editAuthor(editAuthor, {
+        //     id: ID,
+        //     input: {
+        //       first_name: "Jason",
+        //       last_name: "Appiatu",
+        //     },
+        //   });
+        //   expect(res).to.be.an("object");
+        //   expect(res.status).to.be.eql(404);
+        //   expect(res.data).to.be.eql(null);
+        // });
+        // // it("Delete author (Correct ID)", async () => {
+        // //   const ID = "63e6571e27c7290fd13be034";
+        // //   const res = await resolvers.Mutation.deleteAuthor(deleteAuthor, {
+        // //     id: ID,
+        // //   });
+        // //   expect(res).to.be.an("object");
+        // //   expect(res.status).to.be.eql(200);
+        // //   expect(res.data).to.be.eql(null);
+        // // });
+        // it("Delete author (Wrong ID)", async () => {
+        //   const ID = "63e656e9231f37ca3807bd7g";
+        //   const res = await resolvers.Mutation.deleteAuthor(deleteAuthor, {
+        //     id: ID,
+        //   });
+        //   expect(res).to.be.an("object");
+        //   expect(res.status).to.be.eql(500);
+        //   expect(res.data).to.be.eql(null);
+        // });
+        // it("Delete author (No ID)", async () => {
+        //   const ID = "";
+        //   const res = await resolvers.Mutation.deleteAuthor(deleteAuthor, {
+        //     id: ID,
+        //   });
+        //   expect(res).to.be.an("object");
+        //   expect(res.status).to.be.eql(404);
+        //   expect(res.data).to.be.eql(null);
+        // });
     });
 });
